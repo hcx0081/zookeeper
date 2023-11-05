@@ -1,16 +1,19 @@
+package com.zookeeper.watcher;
+
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.ChildData;
+import org.apache.curator.framework.recipes.cache.NodeCache;
+import org.apache.curator.framework.recipes.cache.NodeCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
-import org.apache.zookeeper.CreateMode;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @Description:
+ * {@code @description:}
  */
-public class CreateTest {
+public class NodeCacheTest {
     CuratorFramework curatorFramework;
     
     @Before
@@ -28,18 +31,22 @@ public class CreateTest {
     }
     
     @Test
-    public void createTest() throws Exception {
-        String path = curatorFramework.create()
-                                      .creatingParentsIfNeeded()
-                                      .withMode(CreateMode.PERSISTENT)
-                                      .forPath("/world/app", "hello, 世界".getBytes());
-        System.out.println(path);
-    }
-    
-    @After
-    public void close() {
-        if (curatorFramework != null) {
-            curatorFramework.close();
+    public void nodeCacheTest() throws Exception {
+        NodeCache nodeCache = new NodeCache(curatorFramework, "/app1");
+        nodeCache.getListenable().addListener(new NodeCacheListener() {
+            @Override
+            public void nodeChanged() throws Exception {
+                System.out.println("节点变化了");
+                
+                ChildData currentData = nodeCache.getCurrentData();
+                System.out.println(new String(currentData.getData()));
+            }
+        });
+        nodeCache.start();
+        
+        // 一直监听
+        while (true) {
+        
         }
     }
 }

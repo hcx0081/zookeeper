@@ -1,3 +1,5 @@
+package com.zookeeper.crud;
+
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -5,7 +7,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.junit.Test;
 
 /**
- * @Description:
+ * {@code @description:}
  */
 public class ConnectTest {
     @Test
