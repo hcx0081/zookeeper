@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * {@code @description:}
  */
-public class deleteTest {
+public class DeleteTest {
     CuratorFramework curatorFramework;
     
     @Before
